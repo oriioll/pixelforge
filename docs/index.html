@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>pixelforge · mejora fotos comprimidas, gratis y sin conexión</title>
+  <meta name="description" content="Convierte fotos comprimidas de Telegram o redes en imágenes HD, 2K o 4K con aspecto de cámara profesional. Presets para fútbol y selfies de espejo. Gratis, local y sin cuentas.">
+  <meta name="theme-color" content="#0c0c0d">
+  <link rel="icon" type="image/svg+xml" href="assets/icon.svg">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="wrap">
+    <nav aria-label="Principal">
+      <a class="brand" href="#top"><img src="assets/icon.svg" alt="">pixelforge</a>
+      <div class="links">
+        <a href="#presets">Presets</a>
+        <a href="#como-funciona">Cómo funciona</a>
+        <a href="#preguntas">Preguntas</a>
+        <a href="https://github.com/oriioll/pixelforge">GitHub</a>
+      </div>
+    </nav>
+
+    <header class="hero" id="top">
+      <h1>Esa foto de Telegram, con <em>calidad de cámara</em>.</h1>
+      <p class="lead">pixelforge quita la compresión, escala a 2K o 4K y devuelve nitidez real, no solo más píxeles. Pensado para fotos de fútbol y selfies de espejo, y aguanta el zoom en el móvil.</p>
+      <div class="cta">
+        <a class="btn primary" id="dl-windows" href="https://github.com/oriioll/pixelforge/releases/latest">Descargar para Windows</a>
+        <a class="btn ghost" id="dl-android" href="#" aria-disabled="true" title="Fase 2">Android · próximamente</a>
+      </div>
+      <p class="meta" id="dl-meta">Windows 10/11 · gratis · sin cuentas · sin marcas de agua · funciona sin conexión</p>
+    </header>
+
+    <figure class="shot">
+      <div class="window" role="img" aria-label="Boceto de la interfaz: cola de imágenes a la izquierda, comparador antes y después en el centro, controles a la derecha">
+        <div class="bar"><i></i><i></i><i></i>&nbsp;pixelforge</div>
+        <div class="side"><div class="row on"></div><div class="row"></div><div class="row"></div></div>
+        <div class="compare"><div class="after"></div><div class="before"></div><span class="tag l">Original</span><span class="tag r">Mejorada</span><div class="line"></div></div>
+        <div class="ctrl"><div class="row on"></div><div class="row"></div><div class="slider"></div><div class="slider"></div><div class="go"></div></div>
+        <img class="real" src="assets/screenshot-main.png" alt="Captura de pixelforge" onerror="this.remove()">
+      </div>
+      <figcaption>Boceto de la interfaz: cola, comparador antes/después con zoom y controles por preset.</figcaption>
+    </figure>
+  </div>
+
+  <section id="presets"><div class="wrap">
+    <h2>Dos presets, cada uno con su criterio</h2>
+    <p class="sub">La app sugiere el preset al ver la foto (césped en el encuadre, por ejemplo) y tú decides. Cada preset tiene su propio control de intensidad.</p>
+    <div class="cards">
+      <article class="card">
+        <h3>Fútbol</h3>
+        <ul>
+          <li><strong>Denoise suave</strong> que conserva la lluvia y el cielo oscuro.</li>
+          <li><strong>Luces de estadio</strong> recuperadas sin quemarlas; sombras levantadas con cuidado.</li>
+          <li><strong>Nitidez según el foco:</strong> fuerte en jugador, camiseta, escudo y césped; el público desenfocado se respeta, sin texturas inventadas.</li>
+          <li><strong>Caras</strong> restauradas con CodeFormer a fidelidad alta para no cambiar la expresión.</li>
+        </ul>
+      </article>
+      <article class="card">
+        <h3>Selfie de espejo</h3>
+        <ul>
+          <li><strong>Piel con textura:</strong> nitidez y ojos mejorados sin efecto plástico.</li>
+          <li><strong>Luz y balance de blancos</strong> corregidos; menos ruido de interior.</li>
+          <li><strong>Texto, ropa y reflejos</strong> nítidos, sin deformar el móvil ni el espejo.</li>
+          <li><strong>CodeFormer opcional:</strong> con fidelidad alta, y se puede desactivar.</li>
+        </ul>
+      </article>
+    </div>
+  </div></section>
+
+  <section id="como-funciona"><div class="wrap">
+    <h2>Cómo funciona</h2>
+    <p class="sub">Un pipeline por etapas, todo en tu equipo.</p>
+    <ol class="steps">
+      <li><div><b>Quitar artefactos JPEG</b><span>Detecta la rejilla de bloques de 8×8 de la compresión y la suaviza antes de escalar.</span></div></li>
+      <li><div><b>Real-ESRGAN ×4</b><span>Modelos x4plus y general-x4v3 (con fuerza de denoise ajustable), por teselas y en lote.</span></div></li>
+      <li><div><b>Supersampling</b><span>Escala 4× y reduce al tamaño elegido (2K por defecto) para un detalle más limpio.</span></div></li>
+      <li><div><b>Protección del bokeh</b><span>Donde la foto original estaba desenfocada, no se conserva la textura inventada por la IA.</span></div></li>
+      <li><div><b>Luz y color</b><span>Sombras, altas luces y balance de blancos según el preset.</span></div></li>
+      <li><div><b>Nitidez selectiva</b><span>Máscaras de foco, césped, piel y bordes; un último afinado suave.</span></div></li>
+    </ol>
+  </div></section>
+
+  <section id="preguntas"><div class="wrap">
+    <h2>Preguntas</h2>
+    <dl>
+      <div><dt>¿Necesita internet o una cuenta?</dt><dd>No. Todo se procesa en local. No hay cuentas, límites ni marcas de agua.</dd></div>
+      <div><dt>¿Qué hardware necesito?</dt><dd>Una GPU con soporte Vulkan (casi cualquier gráfica reciente, integrada incluida). Sin GPU compatible, el motor de escalado no arranca.</dd></div>
+      <div><dt>¿Cuánto ocupa?</dt><dd>Unos 400 MB: casi todo son los modelos de IA que van dentro del instalador.</dd></div>
+      <div><dt>¿Y Android?</dt><dd>Es la Fase 2. Se publicará el APK en la misma página cuando esté listo.</dd></div>
+      <div><dt>¿Puedo usarlo en un proyecto comercial?</dt><dd>El código es MIT, pero los modelos de caras (CodeFormer, SCRFD) son de uso no comercial. Mira <a href="https://github.com/oriioll/pixelforge/blob/main/THIRD_PARTY_LICENSES.md">las licencias</a>.</dd></div>
+      <div><dt>Windows me avisa al instalar</dt><dd>El instalador no está firmado con un certificado de pago. En SmartScreen pulsa «Más información» y «Ejecutar de todas formas».</dd></div>
+    </dl>
+  </div></section>
+
+  <div class="wrap">
+    <footer>
+      <span>pixelforge · MIT · <a href="https://github.com/oriioll/pixelforge">código en GitHub</a></span>
+      <span>Hecho con Tauri, Rust, React y Real-ESRGAN.</span>
+    </footer>
+  </div>
+
+  <script>
+    // Point the button at the installer of the latest release; fall back to the releases page.
+    (async () => {
+      try {
+        const res = await fetch("https://api.github.com/repos/oriioll/pixelforge/releases/latest");
+        if (!res.ok) return;
+        const rel = await res.json();
+        const exe = (rel.assets || []).find((a) => a.name.endsWith("-setup.exe"));
+        if (exe) {
+          document.getElementById("dl-windows").href = exe.browser_download_url;
+          document.getElementById("dl-meta").textContent = `${rel.tag_name} · ${(exe.size / 1e6).toFixed(0)} MB · Windows 10/11 · gratis · sin conexión`;
+        }
+        const apk = (rel.assets || []).find((a) => a.name.endsWith(".apk"));
+        if (apk) {
+          const b = document.getElementById("dl-android");
+          b.href = apk.browser_download_url; b.textContent = "Descargar para Android"; b.removeAttribute("aria-disabled"); b.removeAttribute("title");
+        }
+      } catch { /* offline or rate-limited: the static link still works */ }
+    })();
+  </script>
+</body>
+</html>
