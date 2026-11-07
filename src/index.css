@@ -1,0 +1,64 @@
+@import "tailwindcss";
+
+/*
+ * Design tokens. Neutral dark surfaces, one warm "floodlight" accent reserved for
+ * focus, the active preset and slider ranges. Primary actions are light-on-dark.
+ */
+@theme {
+  --font-sans: "Geist Variable", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "Geist Mono Variable", ui-monospace, monospace;
+
+  --color-background: #0c0c0d;
+  --color-surface: #141415;
+  --color-surface-2: #1b1b1d;
+  --color-border: #2a2a2d;
+  --color-border-strong: #3a3a3e;
+  --color-foreground: #ededee;
+  --color-muted: #8c8c92;
+  --color-floodlight: #e9d78a;
+  --color-danger: #f0776c;
+  --color-ok: #7fd3a1;
+
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 10px;
+}
+
+@layer base {
+  html,
+  body,
+  #root {
+    height: 100%;
+  }
+  body {
+    background: var(--color-background);
+    color: var(--color-foreground);
+    font-family: var(--font-sans);
+    font-size: 13px;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    overflow: hidden;
+    user-select: none;
+  }
+  :focus-visible {
+    outline: 2px solid var(--color-floodlight);
+    outline-offset: 2px;
+  }
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: var(--color-border-strong);
+    border-radius: 8px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    transition-duration: 0.001ms !important;
+  }
+}
