@@ -120,11 +120,19 @@ impl Context<'_> {
     }
 }
 
-/// Runs a job and returns the path written.
+/// What a finished job produced.
+#[derive(Clone, Debug, Serialize)]
+pub struct Outcome {
+    pub path: PathBuf,
+    pub width: u32,
+    pub height: u32,
+}
+
+/// Runs a job and returns the file written and its size.
 ///
 /// # Errors
 /// Any [`Error`]; [`Error::Cancelled`] if the cancel flag was raised between stages.
-pub fn run(job: &EnhanceJob, ctx: &mut Context, on_progress: &mut dyn FnMut(Progress)) -> Result<PathBuf> {
+pub fn run(job: &EnhanceJob, ctx: &mut Context, on_progress: &mut dyn FnMut(Progress)) -> Result<Outcome> {
     let params = job.preset.resolve(job.intensity);
     let mut emit = |stage: Stage, fraction: f32| on_progress(Progress { stage, fraction: fraction.clamp(0.0, 1.0) });
 
@@ -184,7 +192,7 @@ pub fn run(job: &EnhanceJob, ctx: &mut Context, on_progress: &mut dyn FnMut(Prog
     emit(Stage::Saving, 0.96);
     save(&out.to_rgb8(), &job.output, job.format, job.jpeg_quality)?;
     emit(Stage::Done, 1.0);
-    Ok(job.output.clone())
+    Ok(Outcome { path: job.output.clone(), width: tw, height: th })
 }
 
 /// Shrinks inputs that would make the 4x output more than twice the target, which only
@@ -415,7 +423,7 @@ mod tests {
             let exe = dir.join("realesrgan-ncnn-vulkan");
             std::fs::write(&exe, "#!/bin/sh\nwhile [ $# -gt 0 ]; do case $1 in -o) out=$2; shift;; esac; shift; done\nprintf '50.00%%\\n' >&2\ncp \"$(dirname \"$0\")/canned.png\" \"$out\"\n").unwrap();
             std::fs::set_permissions(&exe, std::fs::Permissions::from_mode(0o755)).unwrap();
-            Engine { exe, models_dir: dir.join("models") }
+            Engine { exe, models_dir: dir.join("models"), dll_dirs: vec![] }
         }
 
         fn job(dir: &Path, preset: Preset) -> EnhanceJob {
@@ -448,7 +456,8 @@ mod tests {
             let mut ctx = Context { engine: &engine, faces: None, cancel: &cancel, work_dir: &dir.join("work") };
             let mut seen = vec![];
             let out = run(&job(&dir, preset), &mut ctx, &mut |p| seen.push(p)).unwrap();
-            (out, seen)
+            assert_eq!((out.width, out.height), (96, 64));
+            (out.path, seen)
         }
 
         #[test]

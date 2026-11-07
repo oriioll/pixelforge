@@ -35,6 +35,8 @@ pub struct ModelInfo {
 pub struct Engine {
     pub exe: PathBuf,
     pub models_dir: PathBuf,
+    /// Extra directories prepended to `PATH` for the child (the OpenMP runtime on Windows).
+    pub dll_dirs: Vec<PathBuf>,
 }
 
 impl Engine {
@@ -52,7 +54,13 @@ impl Engine {
             .map(PathBuf::from)
             .or_else(|| model_dirs.iter().find(|d| d.join(format!("{MODEL_X4PLUS}.param")).is_file()).cloned())
             .ok_or_else(|| Error::EngineNotFound(join_dirs(model_dirs)))?;
-        Ok(Self { exe, models_dir })
+        Ok(Self { exe, models_dir, dll_dirs: vec![] })
+    }
+
+    /// Adds directories searched for the tool's DLLs.
+    pub fn with_dll_dirs(mut self, dirs: Vec<PathBuf>) -> Self {
+        self.dll_dirs = dirs;
+        self
     }
 
     /// True when both ncnn files of `name` exist.
@@ -82,6 +90,13 @@ impl Engine {
         cmd.args(["-i"]).arg(input).arg("-o").arg(output).args(["-n", model, "-s", "4", "-f", "png", "-t"]).arg(tile.to_string()).arg("-m").arg(&self.models_dir);
         if let Some(dir) = self.exe.parent() {
             cmd.current_dir(dir); // lets Windows find vcomp140.dll next to the exe
+        }
+        if !self.dll_dirs.is_empty() {
+            let existing = std::env::var_os("PATH").unwrap_or_default();
+            let joined = std::env::join_paths(self.dll_dirs.iter().cloned().chain(std::env::split_paths(&existing)));
+            if let Ok(path) = joined {
+                cmd.env("PATH", path);
+            }
         }
         hide_console(&mut cmd);
         let mut child = cmd.stdout(Stdio::null()).stderr(Stdio::piped()).spawn()?;
