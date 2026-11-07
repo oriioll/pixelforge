@@ -1,0 +1,13 @@
+node_modules/
+dist/
+target/
+.vite/
+*.log
+.DS_Store
+
+# Downloaded at build time by scripts/fetch-models.sh (never committed)
+src-tauri/binaries/*
+!src-tauri/binaries/.gitkeep
+src-tauri/resources/*
+!src-tauri/resources/.gitkeep
+src-tauri/gen/
