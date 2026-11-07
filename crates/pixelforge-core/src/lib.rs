@@ -6,5 +6,9 @@
 pub mod buffer;
 pub mod error;
 pub mod filters;
+pub mod masks;
+pub mod restore;
+pub mod sharpen;
+pub mod tone;
 
 pub use error::{Error, Result};
