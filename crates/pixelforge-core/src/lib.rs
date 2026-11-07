@@ -6,6 +6,7 @@
 pub mod buffer;
 pub mod engine;
 pub mod error;
+pub mod faces;
 pub mod filters;
 pub mod masks;
 pub mod presets;
