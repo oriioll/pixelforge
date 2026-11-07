@@ -208,7 +208,8 @@ pub fn history_list(app: AppHandle) -> Vec<history::HistoryEntry> {
 
 #[tauri::command]
 pub fn history_remove(app: AppHandle, id: String) -> Result<(), String> {
-    let _guard = app.state::<AppState>().history_lock.lock().unwrap();
+    let state = app.state::<AppState>();
+    let _guard = state.history_lock.lock().unwrap();
     let dir = paths::data_dir(&app);
     let kept: Vec<_> = history::load(&dir).into_iter().filter(|e| e.id != id).collect();
     history::save(&dir, &kept).map_err(|e| e.to_string())
@@ -216,6 +217,7 @@ pub fn history_remove(app: AppHandle, id: String) -> Result<(), String> {
 
 #[tauri::command]
 pub fn history_clear(app: AppHandle) -> Result<(), String> {
-    let _guard = app.state::<AppState>().history_lock.lock().unwrap();
+    let state = app.state::<AppState>();
+    let _guard = state.history_lock.lock().unwrap();
     history::save(&paths::data_dir(&app), &[]).map_err(|e| e.to_string())
 }
