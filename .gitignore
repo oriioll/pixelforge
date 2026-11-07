@@ -11,3 +11,7 @@ src-tauri/binaries/*
 src-tauri/resources/*
 !src-tauri/resources/.gitkeep
 src-tauri/gen/
+
+# Raw downloads cache of scripts/fetch_assets.py
+.asset-cache/
+__pycache__/
