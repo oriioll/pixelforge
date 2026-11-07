@@ -1,0 +1,19 @@
+[package]
+name = "pixelforge-core"
+version = "0.1.0"
+edition = "2021"
+rust-version = "1.77"
+description = "Image enhancement pipeline for pixelforge: restoration, tone, masks, sharpening and sidecar orchestration"
+license = "MIT"
+
+[features]
+default = []
+# CodeFormer face restoration + SCRFD face detection through ONNX Runtime.
+codeformer = ["dep:ort"]
+
+[dependencies]
+image = { version = "0.25", default-features = false, features = ["png", "jpeg"] }
+rayon = "1"
+serde = { version = "1", features = ["derive"] }
+thiserror = "1"
+ort = { version = "=2.0.0-rc.10", optional = true }
