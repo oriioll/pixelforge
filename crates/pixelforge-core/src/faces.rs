@@ -284,9 +284,10 @@ mod onnx {
                 }
             }
             let input = Tensor::from_array(([1usize, 3, CROP, CROP], chw)).map_err(fe)?;
-            let weight = Tensor::from_array(([1usize], vec![fidelity.clamp(0.0, 1.0) as f64])).map_err(fe)?;
+            // The exported graph declares `weight` as a rank-0 double (checked against codeformer.onnx).
+            let weight = Tensor::from_array(((), vec![fidelity.clamp(0.0, 1.0) as f64])).map_err(fe)?;
             let outputs = self.codeformer.run(inputs!["input" => input, "weight" => weight]).map_err(fe)?;
-            let (_, data) = outputs[0].try_extract_tensor::<f32>().map_err(fe)?;
+            let (_, data) = outputs["output"].try_extract_tensor::<f32>().map_err(fe)?;
             if data.len() != 3 * plane {
                 return Err(Error::Faces(format!("unexpected CodeFormer output size {}", data.len())));
             }
