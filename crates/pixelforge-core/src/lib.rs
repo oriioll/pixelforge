@@ -4,11 +4,13 @@
 //! into progress events and files on disk.
 
 pub mod buffer;
+pub mod detect;
 pub mod engine;
 pub mod error;
 pub mod faces;
 pub mod filters;
 pub mod masks;
+pub mod pipeline;
 pub mod presets;
 pub mod restore;
 pub mod sharpen;
